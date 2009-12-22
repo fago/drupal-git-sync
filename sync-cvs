@@ -4,10 +4,15 @@
 # at http://drupal.org/node/277268. However we only rsync the directories
 # of the modules needed - not the whole big CVS.
 
-
 cd `dirname $0`
+
 # Include our configuration options.
 . ./drupal_sync.conf
+
+QUIET="-q"
+if [ ! $VERBOSE = "0" ]; then
+  QUIET=""
+fi
 
 export CVSROOT=$CVSROOT
 
@@ -38,6 +43,7 @@ do
   #update git from local cvs mirror
   # -k is important for cvs ids being replaced with $Id$
   # -o master makes sure the branch for HEAD is named "master"
-  git cvsimport -i -k -o master -a -p x -v -d $CVSSRV contributions/modules/$module/$module
+  git cvsimport -i -k -o master -a -p "-x,$QUIET" -v -d $CVSSRV contributions/modules/$module/$module
 done
+
 
