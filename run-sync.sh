@@ -11,7 +11,10 @@ LIST="entity rules"
 for module in $LIST
 do
   cd $GITSRV/$module
-  git push origin :
+  # We don't use --mirror by default, so additonal branches not in CVS
+  # are not removed.
+  git push origin --all
+  git push origin --tags
 done
 
 
