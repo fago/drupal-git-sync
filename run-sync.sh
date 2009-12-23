@@ -11,16 +11,18 @@ if [ ! $VERBOSE = "0" ]; then
 fi
 
 LIST="entity rules"
-./sync-cvs $LIST
 
 for module in $LIST
 do
   cd $GITSRV/$module
+  echo "Pulling $module from origin..."
+  git fetch origin $QUIET
+
+   echo "Synching with cvs..."
+  ../../sync-cvs $module
+
   echo "Pushing $module to origin..."
-  # We don't use --mirror by default, so additonal branches not in CVS
-  # are not removed.
-  git push origin $QUIET --all
-  git push origin $QUIET --tags
+  git push origin $QUIET
 done
 
 

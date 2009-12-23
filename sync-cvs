@@ -38,8 +38,8 @@ do
   # That way the files go into $module/$module. Doing so lets cvs work right
   # althoug the repository isn't complete. Don't know why, but it works.
   rsync -avz --delete cvs.drupal.org::cvsmirror-contrib/contributions/modules/$module $CVSSRV/contributions/modules/$module/ #> /dev/null 2>&1
-  cd $GITSRV/$module
 
+  cd $GITSRV/$module
   #update git from local cvs mirror
   # -k is important for cvs ids being replaced with $Id$
   # -o master makes sure the branch for HEAD is named "master"
