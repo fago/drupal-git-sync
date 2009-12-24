@@ -14,15 +14,20 @@ LIST="entity rules"
 
 for module in $LIST
 do
-  cd $GITSRV/$module
+  echo "Synching with cvs..."
+  ./sync-cvs $module
+  
+  echo "Synching git cvs copy with git mirror..."
+  cd $GITSRV/$module.cvs
+  git push -f ../$module.git
+  
+  cd $GITSRV/$module.git
   echo "Pulling $module from origin..."
   git fetch origin $QUIET
 
-   echo "Synching with cvs..."
-  ../../sync-cvs $module
-
   echo "Pushing $module to origin..."
   git push origin $QUIET
+  cd ../..
 done
 
 
