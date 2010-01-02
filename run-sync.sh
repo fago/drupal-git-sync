@@ -16,18 +16,23 @@ for module in $LIST
 do
   echo "Synching with cvs..."
   ./sync-cvs $module
-  
-  echo "Synching git cvs copy with git mirror..."
+
   cd $GITSRV/$module.cvs
-  git push -f ../$module.git
-  
+  echo "Synch git-cvs from $module..."
+  git push $QUIET --all -f ../$module.git
+
   cd $GITSRV/$module.git
   echo "Pulling $module from origin..."
-  git fetch origin $QUIET
+  git fetch $QUIET origin
+
+  echo "Rebasing branches for $module..."
+  for branch in `ls .git/refs/remotes/origin/`; do
+    git checkout $QUIET $branch
+    git rebase $QUIET origin/$branch
+  done
 
   echo "Pushing $module to origin..."
-  git push origin $QUIET
+  git push --all origin $QUIET
+  git push --tags origin $QUIET
   cd ../..
 done
-
-
